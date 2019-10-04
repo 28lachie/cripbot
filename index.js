@@ -1,28 +1,32 @@
-const G = require('gizoogle');
+const gizoogleAPI = require('gizoogle');
+const discordAPI = require('discord.js');
+const discordToken = "NjI5NTc4NTQ0MDQ1MDk2OTcw.XZc4-A.bvz2jYF4bLDl_q4TNhyo0apvEHg";
+const discordClient = new discordAPI.Client();
 
-const Discord = require('discord.js');
+discordClient.login(discordToken);
 
-const token = "NjI5NTc4NTQ0MDQ1MDk2OTcw.XZb0tw.fsd_ws8g2yepKaAI15kVcBQSPfA";
-
-const client = new Discord.Client();
-
-client.on('ready', () => {
+// Discord Event Handling
+discordClient.on('ready', () => {
     console.log('Bot is now connected');
-    //client.channels.find(x => x.name === 'g-channel').send(TranslateCheck)
 });
 
-
-G.string('Hello good sir, I want your finest coffee')
-
-
-
-client.on('message', (message) =>{
-    if (message.author.id !== client.user.id && message.content){
-        message.channel.send(message.content, {
-            tts:false
+discordClient.on('message', (message) =>{
+    if (message.author.id !== discordClient.user.id && message.content){
+        gizoogleAPI.string(message.content,function(error, translation) {
+            processTranslationMessage(message, translation)
         });
-        message.delete(500);
     }
-})
+});
 
-client.login(token);
+// Functons
+function processTranslationMessage(message, translation) {
+    message.delete();
+
+    message.channel.send(new discordAPI.RichEmbed()
+        .setColor('#ffffff')
+        .setDescription(translation)
+        .addField("Translation:", message.content, false)
+        .setAuthor(message.guild.member(message.author).displayName, message.author.avatarURL))
+}
+
+
