@@ -1,6 +1,6 @@
 const gizoogleAPI = require('gizoogle');
 const discordAPI = require('discord.js');
-const discordToken = "NjI5NTc4NTQ0MDQ1MDk2OTcw.XZc4-A.bvz2jYF4bLDl_q4TNhyo0apvEHg";
+const discordToken = "token";
 const discordClient = new discordAPI.Client();
 
 discordClient.login(discordToken);
